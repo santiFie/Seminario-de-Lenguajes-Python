@@ -34,7 +34,7 @@ for i in range(0, times):
             if ( int(number_1 / number_2) == result ):
                 ok = True
     if ( ok ):
-        print (" Es correcto!!!!!!!!!!!!!!!!")
+        print (" Es correcto!!!")
         cant += 1
     else:
         print (" Es incorrecto :(")
