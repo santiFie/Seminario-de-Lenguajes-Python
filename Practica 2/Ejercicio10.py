@@ -1,6 +1,6 @@
 def calcularPromedio ( tupla ):
     """ sumo las notas y las divido por la cantidad de notas"""
-    return round ( ( ( tupla[1] + tupla[2]) / len(tupla)-1 ), 2)
+    return round ( ( ( tupla[1] + tupla[2]) / 2 ), 2)
 
 
 nombres = ''' 'Agustin', 'Alan', 'Andrés', 'Ariadna', 'Bautista', 'CAROLINA', 'CESAR',
@@ -21,27 +21,29 @@ notas_2 = [30, 95, 28, 84, 84, 43, 66, 51, 4, 11, 58, 10, 13, 34, 96, 71, 86, 37
 
 nombres = nombres.replace(",", " ").replace("\n", " ").replace("'", " ")
 
+#hago una lista con todos los nombres
 lista_nombres = nombres.split()
 
 
-
+#limito la cantidad de notas a la cantidad de nombres
 notas_1 = notas_1[:len(lista_nombres)]
 
 notas_2 = notas_2[:len(lista_nombres)]
 
 
-tupla =  tuple ( zip ( lista_nombres, notas_1, notas_2 ) )
+
+#asignar datos
+tupla_datos =  tuple ( zip ( lista_nombres, notas_1, notas_2 ) )
 
 
 
 
-lista_promedios = list( map( lambda x: calcularPromedio(x), tupla))
+lista_promedios = list( map( lambda x: calcularPromedio(x), tupla_datos))
 
+#asignar promedios
 promedios_alumnos = list ( zip ( lista_nombres, lista_promedios ))
 
 
-
-promedio_general =  round ( ( sum ( lista_promedios ) / len (promedios_alumnos)) , 2 )
 
 
 
@@ -52,18 +54,42 @@ alumno_maximo = list ( filter(lambda x: x[1] == nota_promedio_maxima, promedios_
 
 
 
+
+
+print ( f"El alumno con nota promedio mas alta es: {alumno_maximo[0][0]}" )
+
+
+
+
+
+
+
+
+
+promedio_general =  round ( ( sum ( lista_promedios ) / len (promedios_alumnos)) , 2 )
+
+
+print ( f"El promedio general de los alumnos es {promedio_general}")
+
+print ( f"El promedio de los alumnos es: {promedios_alumnos}")
+
+
+
+
+
 todas_notas = notas_1 + notas_2
 
 nota_minima = min( todas_notas )
 
-alumno_minimo = list ( filter(lambda x: x[1] == nota_minima, tupla )) [0][0]
-
-print ( tupla )
-
-print ( f"El alumno con la nota mas baja es {alumno_minimo}" )
+alumno_minimo =  min ( tupla_datos, key = lambda x: (x[1], x[2]))
 
 
 
-print ( f"El alumno con nota promedio mas alta es: {alumno_maximo[0][0]}" )
+
+
+print ( f"El alumno con la nota mas baja es {alumno_minimo[0]}" )
+
+
+
 
 
