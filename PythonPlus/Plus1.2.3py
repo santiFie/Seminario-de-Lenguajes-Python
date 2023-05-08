@@ -1,0 +1,56 @@
+import csv
+import os
+
+def agregar ( todos_los_nombres, linea ):
+
+    todos_los_nombres.add ( linea[1]) # agrego todos los nombres al conjunto de nombres
+
+    return linea [3] == "Foro: Avisos" 
+
+
+
+def Nunca_Accedieron( orden = "None"):
+
+    ruta = ruta = os.path.dirname(os.path.realpath("."))
+    
+    archi = os.path.join( ruta, "santiago", "log_catedras.csv")
+    f = open(archi,"r")
+    csvreader = csv.reader(f, delimiter=',')
+
+    encabezado = next ( csvreader) # almaceno la primer linea  que contiene los encabezados para no trabajar con ellos como si fueran datos
+
+
+    todos_los_nombres = set()
+
+        
+
+    
+    
+    lista_foro = list(filter(lambda linea: agregar( todos_los_nombres, linea ) , csvreader))
+
+    set_accedieron = set(map(lambda n: n[1], lista_foro)) # hago un conjunto con los usuarios que SI accedieron al foro de avisos
+
+
+    
+    resultado = todos_los_nombres - set_accedieron
+    
+    if (orden == "None"):
+        return resultado
+    else:
+        if ( orden == "A"):
+            return sorted ( resultado )
+        else:
+            if ( orden == "B"):
+                return sorted ( resultado , reverse= True)
+    f.close()
+
+
+lista = Nunca_Accedieron("B")
+
+print ( "-" *10 )
+print ( 'Usuarios en el sistema')
+print ( "-" *10 )
+
+for elem in lista:
+    
+    print ( "-----{}-----".format ( elem ))
