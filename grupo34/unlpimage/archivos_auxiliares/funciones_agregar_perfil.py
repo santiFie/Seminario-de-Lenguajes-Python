@@ -1,13 +1,13 @@
 import PySimpleGUI as sg
 import os
 import json
-import PIL as Image
 
-
-
-
+imagen_actual = None
+veces = 0
 
 def crear_ventana_agregar_perfil():
+
+    """Esta funcion retorna la ventana del Agregar Perfil"""
 
     correctos = False
 
@@ -17,21 +17,21 @@ def crear_ventana_agregar_perfil():
 
     culumna1 = sg.Column ( layout= [  
 
-                [sg.Text('Ingrese Alias')]   ,  
+                [sg.Text('Ingrese Alias',background_color='#000000')]   ,  
                 
                 [sg.Input(key = '-AGREGAR-ALIAS-')] , 
                 
-                [sg.Text('Ingrese nombre:', key= '-AGREGAR-TEXTO_NOMBRE-')] , 
+                [sg.Text('Ingrese nombre:', key= '-AGREGAR-TEXTO_NOMBRE-',background_color='#000000')] , 
                 
                 [sg.Input( key = '-AGREGAR-NOMBRE-')] , 
 
-                [sg.Text('Ingrese edad:', key= '-AGREGAR-TEXTO_EDAD-')] ,
+                [sg.Text('Ingrese edad:', key= '-AGREGAR-TEXTO_EDAD-', background_color='#000000')] ,
                  
                 [sg.Input ( key= '-AGREGAR-EDAD-')] ,
 
-                [sg.Text('Genero autopercibido')] ,
+                [sg.Text('Genero autopercibido', background_color='#000000')] ,
                  
-                [sg.Combo( ['Masculino','Femenino' ] , key= '-AGREGAR-COMBO-', readonly = True, size= (44,6), default_value=['---Elija una opción---'] )] ,
+                [sg.Combo( ['Masculino','Femenino' ] , key= '-AGREGAR-COMBO-', readonly = True, size= (29,6), default_value=['---Elija una opción---'] )] ,
 
                 [sg.Checkbox ( 'Otro', key = '-AGREGAR-OTRO-' ) ]  ,
 
@@ -39,43 +39,44 @@ def crear_ventana_agregar_perfil():
 
                 [sg.Button( 'Guardar' , key= '-AGREGAR-GUARDAR-' )] 
                 
-                ]  )
+                ] , background_color='#000000' )
     
 
     #columna del avatar
 
-    directorio_imagen = 'imagenes'
+    directorio_imagen = os.path.join ( os.getcwd(), 'unlpimage','imagenes_perfiles' )
 
-    imagen = os.path.join ( directorio_imagen, 'AvatarEnBlanco.png' )
+    imagen = os.path.join ( directorio_imagen, '0.png' )
 
-    columna2 = sg.Column(  layout=[                
+    columna2 = sg.Column (  
+
+                layout= [                
                 
-                [sg.Image(filename=imagen, key='-AGREGAR-IMAGEN-' )  ] ,
+                [sg.Image(filename=imagen, key='-AGREGAR-IMAGEN-' , subsample=1  , size= ( 150,150) )  ] ,
  
-                [sg.Button ( 'Seleccionar avatar', key= '-AGREGAR-AVATAR-') ] 
+                [sg.Button ( 'Seleccionar avatar', key= '-AGREGAR-AVATAR-' , ) ] 
                              
-                ]  , element_justification= 'center' )
+                ], background_color='#000000'
+                 
+                )       
     
 
 
 
     #columna del volver
     
-    columna3 = sg.Column ( layout= [ [ sg.Button( 'Volver', key= '-AGREGAR-VOLVER-') ] ] ) 
+    columna3 = sg.Column ( layout= [ [ sg.Button( 'Volver', key= '-AGREGAR-VOLVER-') ] ] , expand_x=True, element_justification='right' , background_color='#000000') 
     
-    layout = [ [ culumna1, columna2 ] , [columna3]  ]
+    layout = [ [columna3] , [ culumna1, columna2 ]  ]
 
-    ventana= sg.Window('Nuevo Perfil',layout,finalize=True, resizable=True)
-
-
+    ventana= sg.Window('Nuevo Perfil',layout,finalize=True, resizable=True, background_color='#000000', size= ( 800,600 ))
 
     return ventana
 
 
+def crear_ventana_archivos (agregar_imagen, nueva_imagen ):
 
-def crear_ventana_archivos ():
-
-    archivo = None
+    """Esta funcion crea una ventana para elegir una imagen mediante el browse"""
 
     layout = [[sg.Text('Seleccione un archivo:')],
           [sg.Input(), sg.FileBrowse()],
@@ -85,25 +86,31 @@ def crear_ventana_archivos ():
     
     while True:
 
-        event, values = nueva_ventana.read()
+        evento, valores = nueva_ventana.read()
 
-        if event == sg.WIN_CLOSED:
+        if evento == sg.WIN_CLOSED:
             break
 
-        elif event == 'OK':
-            print ( values )
-            archivo = values['Browse']
+        elif evento == 'OK':
+
+            directorio_imagen = os.path.join ( os.getcwd(), 'imagenes_perfiles' )
+
+            nueva_imagen = os.path.join ( directorio_imagen, valores['Browse'] )
+
+            agregar_imagen.update(source= nueva_imagen )
+
             break
 
     nueva_ventana.close()
 
-    return archivo
-
+    return nueva_imagen
 
 
 
 
 def controlador_datos ( nombre, texto_nombre, edad, texto_edad ):
+
+    """Esta funcion analiza si los datos ingresados son correctos"""
     
     correctos = True
 
@@ -141,8 +148,11 @@ def existe_archivo ( ruta ):
 
 
 def cargo_un_usuario (valores, imagen ):
+    """Esta funcion agrega un usuario al archivo json"""
 
     ruta = os.path.join ( os.getcwd(), "datos_usuarios.json" )
+
+    imagen = imagen.split('/')[-1]
 
     datos = { 
               'Alias'  : valores['-AGREGAR-ALIAS-' ] ,
@@ -157,7 +167,7 @@ def cargo_un_usuario (valores, imagen ):
         with open('datos_usuarios.json', 'r') as f:
             usuarios = json.load(f)
 
-        if ( not datos in usuarios ):
+        if ( not datos['Alias'] in usuarios ):
             usuarios.append(datos)
 
     else:
@@ -165,5 +175,5 @@ def cargo_un_usuario (valores, imagen ):
         usuarios = [datos]
     
     with open('datos_usuarios.json', 'w') as f:
-            print ( usuarios )
+            #print ( usuarios )
             json.dump(usuarios, f)
