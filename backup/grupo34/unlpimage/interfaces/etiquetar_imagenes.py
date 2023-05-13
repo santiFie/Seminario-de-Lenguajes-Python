@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import os
-import funciones_menu_principal as f
+import unlpimage.archivos_auxiliares.funciones_menu_principal as f
 from datetime import datetime
 import sys
 

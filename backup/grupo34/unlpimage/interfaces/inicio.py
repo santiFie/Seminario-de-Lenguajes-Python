@@ -1,25 +1,27 @@
 import PySimpleGUI as sg
 import json
 import os
-from agregar_perfil import hacer_todo
-#import funciones_agregar_perfil as funciones_agregar_perfil
 import sys
-sys.path.append(os.getcwd())
+from unlpimage.interfaces.agregar_perfil import hacer_todo
 
-from unlpimage.menu_principal.menu_principal import menu_principal as mp
+import unlpimage.archivos_auxiliares.funciones_agregar_perfil as funciones_agregar_perfil
+from unlpimage.interfaces.menu_principal import menu_principal as mp
 
 # Rutas relativas que van a ser utilizadas
-print ( os.getcwd() )
+
 
 ruta_json = os.path.join(os.getcwd(), 'datos_usuarios.json')
-print(ruta_json)
+
 
 ruta_imagenes = os.path.join(os.getcwd(), 'unlpimage', 'imagenes_perfiles')
-print(ruta_imagenes)
 
 # Cargar los datos de los usuarios desde el archivo JSON
-with open(ruta_json, 'r') as f:
-    usuarios = json.load(f)
+if funciones_agregar_perfil.existe_archivo ( ruta_json ):
+    with open(ruta_json, 'r') as f:
+        usuarios = json.load(f)
+else:
+    with open(ruta_json, 'w') as f:
+        usuarios = []
 
 boton_adicional_tamanio = (10,2)
 boton_usuarios_tamanio = (12,5)
@@ -82,8 +84,7 @@ def mostrar_todos_los_usuarios(usuarios):
         elif event in [usuario["Alias"] for usuario in usuarios]:
             ventana.close()
             usuario_seleccionado = next(usuario for usuario in usuarios if usuario["Alias"] == event)
-            #mp.menu_principal(usuario_seleccionado)
-            print(usuario_seleccionado)
+            mp(usuario_seleccionado)
             break
 
     # Cerramos la ventana y terminamos el programa
@@ -154,23 +155,15 @@ def generar_pantalla_inicio():
         # Manejamos los eventos según su key
         if event == '-AGREGAR-PERFIL-':
             ventana.close()
-            hacer_todo(generar_pantalla_inicio())
-            #funciones_agregar_perfil.crear_ventana_agregar_perfil()
+            hacer_todo(generar_pantalla_inicio(), usuarios)
         elif event == '-MOSTRAR-PERFILES-':
             ventana.close()
             mostrar_todos_los_usuarios(usuarios)
         elif event in [usuario["Alias"] for usuario in usuarios]:
-            ventana.close()
+            #ventana.close()
             usuario_seleccionado = next(usuario for usuario in usuarios if usuario["Alias"] == event)
-            #mp.menu_principal(usuario_seleccionado)
-            print(usuario_seleccionado)
-
+            mp(usuario_seleccionado)
             break
 
     # Cerramos la ventana y terminamos el programa
     ventana.close()
-
-
-usuario = {'Alias': 'manu', "Imagen":"0.png"}
-
-mp(usuario=usuario)

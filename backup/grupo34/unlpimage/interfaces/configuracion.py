@@ -1,8 +1,7 @@
 import PySimpleGUI as sg
-import funciones_menu_principal as f
+import unlpimage.archivos_auxiliares.funciones_menu_principal as f
 import os
 import sys
-sys.path.append(os.getcwd())
 
 import unlpimage.archivos_auxiliares.ventanas as ventanas
 

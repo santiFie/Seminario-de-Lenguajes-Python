@@ -2,9 +2,8 @@ import PySimpleGUI as sg
 import sys
 import os
 import json
-import funciones_menu_principal as f
+import unlpimage.archivos_auxiliares.funciones_menu_principal as f
 import sys
-sys.path.append(os.getcwd())
 import unlpimage.archivos_auxiliares.ventanas as  ventanas
 from unlpimage.archivos_auxiliares.ventanas import crear_ventana_editar_perfil
 
@@ -77,5 +76,3 @@ def hacer_todo ():
         
         imagen_actual = procesar_eventos ( ventana_actual, eventos,  valores, usuario, usuario['Imagen'] )
     
-
-hacer_todo()

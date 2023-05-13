@@ -1,13 +1,15 @@
 import PySimpleGUI as sg
-from . import ventanas
-from . import principal
-from . import configuracion
-from . import editar_perfil as editar
-import etiquetar_imagenes as etiquetar
-import generar_collage as collage
-import generar_meme as meme
-import funciones_menu_principal as f
 import os
+import sys
+
+import unlpimage.archivos_auxiliares.ventanas as ventanas
+import unlpimage.archivos_auxiliares.principal as principal
+import unlpimage.interfaces.configuracion as configuracion
+import unlpimage.interfaces.editar_perfil as editar
+import unlpimage.interfaces.etiquetar_imagenes as etiquetar
+import unlpimage.interfaces.generar_collage as collage
+import unlpimage.interfaces.generar_meme as meme
+import unlpimage.archivos_auxiliares.funciones_menu_principal as f
 
 def menu_principal(usuario):
     ventanas.crear_ventana_principal(usuario["Imagen"])
@@ -45,7 +47,5 @@ def menu_principal(usuario):
                 tags, descripcion= etiquetar.procesar_eventos(ventana_actual,evento,valores,tags,descripcion,usuario)
 
     
-usuario = {'Alias': 'manu', 'Nombre' : "Manuel", 'Genero' : "Masculino", 'Edad' : '23', "Imagen":"0.png"}
 
-menu_principal(usuario)
 

@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 import sys
-print ( sys.path )
-import funciones_menu_principal as f
+import unlpimage.archivos_auxiliares.funciones_menu_principal as f
 import os
 import io
 from PIL import Image

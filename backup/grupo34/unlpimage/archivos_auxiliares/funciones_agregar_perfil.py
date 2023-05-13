@@ -147,7 +147,7 @@ def existe_archivo ( ruta ):
 
 
 
-def cargo_un_usuario (valores, imagen ):
+def cargo_un_usuario (valores, imagen , usuarios):
     """Esta funcion agrega un usuario al archivo json"""
 
     ruta = os.path.join ( os.getcwd(), "datos_usuarios.json" )
@@ -162,17 +162,10 @@ def cargo_un_usuario (valores, imagen ):
               'Imagen' : imagen
             }
 
-    if ( existe_archivo (ruta)):
+    
+    usuarios.append(datos)
 
-        with open('datos_usuarios.json', 'r') as f:
-            usuarios = json.load(f)
-
-        if ( not datos['Alias'] in usuarios ):
-            usuarios.append(datos)
-
-    else:
-
-        usuarios = [datos]
+    
     
     with open('datos_usuarios.json', 'w') as f:
             #print ( usuarios )

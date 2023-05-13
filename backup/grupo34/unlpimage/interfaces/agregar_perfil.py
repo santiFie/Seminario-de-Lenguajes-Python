@@ -1,12 +1,14 @@
 import PySimpleGUI as sg
 import os
-import funciones_agregar_perfil as funciones
-from funciones_agregar_perfil import imagen_actual
+import sys
+sys.path.append(os.getcwd())
+
+import unlpimage.archivos_auxiliares.funciones_agregar_perfil as funciones
 
 
 
 
-def procesar_eventos ( ventana_actual , eventos, valores, imagen_actual   ):
+def procesar_eventos ( ventana_actual , eventos, valores, imagen_actual  , usuarios, ventana_inicio ):
 
     """Esta funcion los eventos de la ventana Agregar Perfil"""
 
@@ -31,9 +33,10 @@ def procesar_eventos ( ventana_actual , eventos, valores, imagen_actual   ):
 
         #agrego un usuario al archivo de usuarios
 
-        funciones.cargo_un_usuario ( valores , imagen_actual)
+        funciones.cargo_un_usuario ( valores , imagen_actual, usuarios )
 
-        ventana_actual.close()        
+        ventana_actual.close()  
+        ventana_inicio      
 
     # si los datos no son correctos, realizo un popup notificandolo
     elif (eventos == "-AGREGAR-GUARDAR-") and ( not correctos ):
@@ -43,25 +46,17 @@ def procesar_eventos ( ventana_actual , eventos, valores, imagen_actual   ):
     elif ( eventos == "-AGREGAR-VOLVER-"):
 
         ventana_actual.close()
+        ventana_inicio
         
 
 
     return imagen_actual
 
-def hacer_todo ():
+def hacer_todo (ventana_inicio, usuarios):
 
     imagen_actual = None
 
     ventana_actual = funciones.crear_ventana_agregar_perfil()
-
-
-    ruta_completa = os.path.join ( os.getcwd(), "datos_usuarios.json" )
-
-    existe = funciones.existe_archivo
-
-    if ( not existe ):
-
-        usuarios = open ( 'datos_usuarios.json' , 'x' )  # en caso de que ya exista, lo abro en el Agregar_Perfil
 
     while True:
 
@@ -70,8 +65,7 @@ def hacer_todo ():
         if (eventos == sg.WIN_CLOSED):
                             
             break
-            generar_pantalla_inicio
 
-        imagen_actual = procesar_eventos ( ventana_actual, eventos,  valores, imagen_actual )
+        imagen_actual = procesar_eventos ( ventana_actual, eventos,  valores, imagen_actual , usuarios , ventana_inicio)
     
-
+    ventana_inicio
